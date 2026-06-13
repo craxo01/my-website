@@ -86,6 +86,9 @@
     display: none;
   }
   /***********main-section-part2**************/
+  .menu-text{
+    margin-left: 0.5rem;
+  }
   .menu-food {
     margin: 0rem 0.5rem;
     overflow-x: scroll;
