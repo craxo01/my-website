@@ -93,6 +93,9 @@
     margin: 0rem 0.5rem;
     overflow-x: scroll;
   }
+  .back-food{
+    width: 80%;
+  }
   /****************main-section-part4**************/
   .item-app {
     flex-direction: column;
