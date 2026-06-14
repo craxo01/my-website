@@ -59,7 +59,7 @@ body {
   background-color: var(--color_fafafa);
 }
 .container {
-  max-width: 72rem;
+  max-width: 75.55%;
   margin: auto;
 }
 /***********header***********/
