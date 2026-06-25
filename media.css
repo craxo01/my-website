@@ -33,9 +33,7 @@
   .login_button {
     margin-top: -0.5rem;
   }
-  .burger-icon:hover ~ .menu-header-mobile {
-    transform: translateX(-8px);
-  }
+
   /***************main************/
   .main_hero {
     flex-direction: column;
@@ -74,7 +72,7 @@
     margin: 0;
   }
   .order-main{
-    font-size: 1rem;
+    font-size: 100%;
     font-weight: 500;
     height: 80%;
   }
@@ -94,7 +92,7 @@
     overflow-x: scroll;
   }
   .back-food{
-    width: 80%;
+    width: 100%;
   }
   /****************main-section-part4**************/
   .item-app {

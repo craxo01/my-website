@@ -134,6 +134,7 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 6px;
+  position: relative;
 }
 
 .bun {
@@ -158,25 +159,50 @@ body {
   border-radius: 8px 8px 30px 30px;
   height: 14px;
 }
+.bun,
+.patty {
+  transition: 0.3s ease;
+}
+
+.burger-icon.active .top {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  height: 10px;
+  border-radius: 10px;
+}
+
+.burger-icon.active .bottom {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+  height: 10px;
+  border-radius: 10px;
+}
+
+.burger-icon.active .patty {
+  opacity: 0;
+}
 .menu-header-mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
+  position: fixed;
+  z-index: 99;
   border-width: 0px;
   border-right-width: 2px;
   border-color: var(--color_323232);
   border-style: solid;
-  border-radius: 0rem 0rem 1rem 0rem;
   list-style: none;
   gap: 30px;
-  margin-top: 17rem;
+  margin-top: 87vh;
   width: 200px;
-  height: 50vh;
+  height: 100vh;
   padding: 1rem;
   transform: translateX(-500px);
   background-color: var(--color_E3E3E3);
-  transition: all 340ms ease-in 20ms;
+  transition: all 180ms ease-in 20ms;
 }
 .menu-header-mobile li {
   cursor: pointer;
@@ -207,12 +233,11 @@ body {
   grid-area: mainitem1;
   margin-top: auto;
   width: 80%;
-  
 }
 .main-left-down {
   display: grid;
-  grid-template-columns: repeat(2,200px);
-  grid-template-rows: repeat(2,auto);
+  grid-template-columns: repeat(2, 200px);
+  grid-template-rows: repeat(2, auto);
   max-width: 70%;
   grid-area: mainitem2;
 }
@@ -237,8 +262,8 @@ body {
 }
 .main-left-down {
   display: grid;
-  grid-template-columns: repeat(2,200px);
-  grid-template-rows: repeat(2,auto);
+  grid-template-columns: repeat(2, 200px);
+  grid-template-rows: repeat(2, auto);
   max-width: 70%;
   grid-area: mainitem2;
 }
@@ -267,13 +292,23 @@ body {
 .count-main_hero svg {
   cursor: pointer;
 }
+
+.count-number::-webkit-outer-spin-button,
+.count-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 .count-number {
+  width: 4ch;
   font-size: 1.2rem;
   border-width: 0px 2px;
   border-style: solid;
   border-color: var(--color_E3E3E3);
-  padding: 0px 1rem;
+  padding: 0px 0rem;
+  text-align: center;
   color: var(--color_FFC300);
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 .order-main {
   display: flex;
@@ -333,10 +368,7 @@ body {
   cursor: pointer;
   background-color: var(--color_E3E3E3);
   border-radius: 2rem;
-  transition: all 140ms ease-in 20ms;
-}
-.menu-food-item:hover {
-  background-color: var(--color_FFC300);
+  transition: all 100ms ease-in;
 }
 .food {
   margin-top: 2rem;
@@ -359,17 +391,19 @@ body {
 .img-food {
   display: flex;
   justify-content: center;
-}
-.food img {
   position: relative;
+}
+
+.food img {
   z-index: 1;
 }
+
 .back-food {
   background-color: var(--color_FFFDE6);
-  width: 21%;
-  height: 15%;
+  width: 100%;
+  height: 65%;
   margin-top: 4rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   position: absolute;
 }
 .text-food {
@@ -697,7 +731,8 @@ footer {
 }
 .li-footer-link {
   margin: 0;
-  padding: 0%;
+  padding: 0;
+
   list-style: none;
   line-height: 2rem;
   font-weight: 200;
