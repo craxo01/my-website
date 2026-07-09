@@ -31,7 +31,7 @@ const footer_interest = document.querySelector(".footer-interest-money");
 const time_footer_log = document.querySelector(".time");
 const sort_footer = document.querySelector(".footer-sort");
 ///////////////////////////////////////////
-let test = true;
+let test;
 a.textContent = "";
 const Users = {
   shima_golabnia: {
@@ -93,6 +93,7 @@ button_header.addEventListener("click", function () {
       Users[mov].user === user_input.value &&
       Users[mov].pin === Number(pin_input.value)
     ) {
+      test = true;
       time(true);
       container2.style.visibility = "visible";
       container3.style.visibility = "visible";
