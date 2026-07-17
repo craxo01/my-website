@@ -1,331 +1,239 @@
-"use strict";
-const container2 = document.querySelector(".container2");
-const container3 = document.querySelector(".container3");
-const text_log = document.querySelector("header p");
-const user_input = document.querySelector(".input-header1");
-const pin_input = document.querySelector(".input-header2");
-const button_header = document.querySelector(".button-header");
-const item1_number = document.querySelector(".item1-number");
-const item1_number_positive = document.querySelector(".item1-number-positive");
-const item1_number_negative = document.querySelector(".item1-number-negative");
-const item1_date = document.querySelector(".item1-date");
-const item1_money = document.querySelector(".item1-money");
-const total_money = document.querySelector(".header-main-text-right");
-const a = document.querySelector(".item1");
-const date_header = document.querySelector(".header-main-text-left-2");
-const input_user_transfer = document.querySelector(
-  "input.item2-input[type='text']",
-);
-const input_number_transfer = document.querySelector(
-  'input.item2-input[type="number"]',
-);
-const button_item2 = document.querySelector(".item2-button");
-const input_loan = document.querySelector('input.item3-input[type="number"]');
-const button_loan = document.querySelector(".item3-button");
-const input_close_user = document.querySelector(".item4-input1");
-const input_close_pin = document.querySelector(".item4-input2");
-const button_close = document.querySelector(".item4-button");
-const footer_in = document.querySelector(".footer-in-money");
-const footer_out = document.querySelector(".footer-out-money");
-const footer_interest = document.querySelector(".footer-interest-money");
-const time_footer_log = document.querySelector(".time");
-const sort_footer = document.querySelector(".footer-sort");
-///////////////////////////////////////////
-let test;
-a.textContent = "";
-const Users = {
-  shima_golabnia: {
-    name: "shima",
-    user: "sh",
-    pin: 7777,
-    money: [1000, -2000, -2500, 6800, 1700],
-    locale: "en-US",
-    currency: "USD",
-    Inventory: function () {
-      let totaly = 0;
-      for (const i of this.money) {
-        totaly += i;
-      }
-      return totaly;
-    },
-  },
-  meraj_chaman: {
-    name: "meraj",
-    user: "me",
-    pin: 1010,
-    money: [8000, -1000, -2000, 2670, 12700],
-    locale: "en-US",
-    currency: "USD",
-    Inventory: function () {
-      let totaly = 0;
-      for (const i of this.money) {
-        totaly += i;
-      }
-      return totaly;
-    },
-  },
-  parsa_eghbaly: {
-    name: "parsa",
-    user: "pa",
-    pin: 4444,
-    money: [87000, 20300, -32500, -38900, -17000],
-    locale: "en-US",
-    currency: "USD",
-    Inventory: function () {
-      let totaly = 0;
-      for (const i of this.money) {
-        totaly += i;
-      }
-      return totaly;
-    },
-  },
+'use strict';
+
+///////////////////////////////////////
+// Modal window
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnscrollto = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const nav_link = document.querySelectorAll('.nav__link');
+const nav__links = document.querySelector('.nav__links');
+const nav_tab = document.querySelector('.operations');
+const nav = document.querySelector('.nav');
+const operations__tab = document.querySelectorAll('.operations__tab');
+const operations__content = document.querySelectorAll('.operations__content');
+const openModal = function () {
+  modal.classList.remove('hidden');
+  overlay.classList.remove('hidden');
 };
-console.log(Math.max(...Users.parsa_eghbaly.money));
-console.log(1000 / 10);
-let currentUser = null;
-///////////////////////////////////////////////
-button_header.addEventListener("click", function () {
-  const now = new Date();
-  console.log(now.toLocaleDateString(local, option));
-  a.textContent = "";
-  Object.keys(Users).find(function (mov, i) {
-    if (
-      Users[mov].user === user_input.value &&
-      Users[mov].pin === Number(pin_input.value)
-    ) {
-      test = true;
-      time(true);
-      container2.style.visibility = "visible";
-      container3.style.visibility = "visible";
-      container2.style.opacity = "100";
-      container3.style.opacity = "100";
-      currentUser = mov;
-      date_header.textContent = `As of ${now.toLocaleDateString(local, option)}`;
-      Transaction(mov);
-      ///////////////////////////////////////////////////
-
-      ///////////////////////////////////////////////////
-
-      return (text_log.textContent = `welcome back, ${Users[mov].name}`);
-    } else if (
-      (i == Object.keys(Users).length - 1 &&
-        Users[mov].user !== user_input.value) ||
-      Number(Users[mov].pin) != Number(pin_input.value)
-    ) {
-      text_log.textContent = `wrong your user or pin`;
-    }
-  });
-
-  if (!user_input.value && !Number(pin_input.value)) {
-    text_log.textContent = "Log in to get started";
-  } else if (user_input.value && !Number(pin_input.value)) {
-    text_log.textContent = "Enter your, pin";
-  } else if (!user_input.value && Number(pin_input.value)) {
-    text_log.textContent = "Enter your, user";
-  }
-  user_input.value = "";
-  pin_input.value = "";
-  return 0;
-});
-////////////////////transfer/////////////////////
-button_item2.addEventListener("click", function () {
-  if (!currentUser) return;
-  Object.keys(Users).find(function (keys) {
-    if (
-      Users[keys].user === input_user_transfer.value &&
-      Users[keys].user !== Users[currentUser].user &&
-      0 < Number(input_number_transfer.value) &&
-      Number(input_number_transfer.value) <=
-        Number(Users[currentUser].Inventory())
-    ) {
-      Users[currentUser].money.push(Number(-input_number_transfer.value));
-      Users[keys].money.push(Number(input_number_transfer.value));
-      Transaction(currentUser);
-    }
-  });
-  input_user_transfer.value = "";
-  input_number_transfer.value = "";
-  return 0;
-});
-///////////////////creat-list-transaction//////////////////////
-const Transaction = function (mov) {
-  let sumin = 0;
-  let sumout = 0;
-  let interest = 0;
-  a.textContent = "";
-  total_money.textContent = formatCurrency(
-    Users[currentUser].Inventory(),
-    Users[currentUser],
-  );
-  for (const [i, item] of Object.entries(Users[mov].money)) {
-    const div_item1 = document.querySelector(".item1");
-    const div_item12 = document.createElement("div.item12");
-    const div_item1_number = document.createElement("div.item1-number");
-    const div_item1_date = document.createElement("div.item1-date");
-    const div_item1_money = document.createElement("div.item1-money");
-    div_item12.classList.add("item12");
-    div_item1_number.classList.add("item1-number");
-    div_item1_date.classList.add("item1-date");
-    div_item1_money.classList.add("item1-money");
-    div_item12.appendChild(div_item1_number);
-    div_item12.appendChild(div_item1_date);
-    div_item12.appendChild(div_item1_money);
-    div_item1.prepend(div_item12);
-    if (item < 0) {
-      div_item1_number.textContent = `${Number(i) + 1} withdrawal`;
-      div_item1_date.textContent = "today";
-      div_item1_money.textContent = formatCurrency(item, Users[currentUser]);
-      div_item1_number.classList.remove("item1-number-positive");
-      div_item1_number.classList.add("item1-number-negative");
-      sumout += item;
-      footer_out.textContent = -sumout;
-    } else {
-      div_item1_number.textContent = `${Number(i) + 1} desposit`;
-      div_item1_date.textContent = "today";
-      div_item1_money.textContent = formatCurrency(item, Users[currentUser]);
-      div_item1_number.classList.add("item1-number-positive");
-      div_item1_number.classList.remove("item1-number-negative");
-      sumin += item;
-      footer_in.textContent = sumin;
-      interest += item / 100;
-      footer_interest.textContent = interest;
-    }
-  }
+const closeModal = function () {
+  modal.classList.add('hidden');
+  overlay.classList.add('hidden');
 };
 
-////////////////loan///////////////
-button_loan.addEventListener("click", function () {
-  if (!currentUser) return;
-  if (
-    Math.max(...Users[currentUser].money) >= Number(input_loan.value) / 10 &&
-    Number(input_loan.value) > 0
-  ) {
-    Users[currentUser].money.push(Number(input_loan.value));
-    Transaction(currentUser);
+for (let i = 0; i < btnsOpenModal.length; i++)
+  btnsOpenModal[i].addEventListener('click', openModal);
+
+btnCloseModal.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+    closeModal();
   }
-  input_loan.value = "";
+});
+////////////////////////////////////////
+btnscrollto.addEventListener('click', function (e) {
+  section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-//////////////close////////////
-button_close.addEventListener("click", function () {
-  if (!currentUser) return;
-  if (
-    input_close_user.value === Users[currentUser].user &&
-    Number(input_close_pin.value) === Users[currentUser].pin
-  ) {
-    delete Users[currentUser];
-    text_log.textContent = "Log in to get started";
-    container2.style.visibility = "hidden";
-    container3.style.visibility = "hidden";
-    container2.style.opacity = "0";
-    container3.style.opacity = "0";
+//////////////////scroll-header-site-Method-1////////////////////
+/*nav_link.forEach(function(el){
+  el.addEventListener('click',function(e){
+    e.preventDefault();
+    const id=el.getAttribute('href');
+    document.querySelector(id).scrollIntoView({behavior : 'smooth'})
+  })
+})*/
+//////////////////scroll-header-site-Method-2////////////////////
+
+nav__links.addEventListener('click', function (e) {
+  if (!link.classList.contains('nav__link')) return;
+
+  const href = link.getAttribute('href');
+  if (href.startsWith('#')) {
+    const id = e.target.getAttribute('href');
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
-  input_close_user.value = "";
-  input_close_pin.value = "";
-  return true;
 });
-//////////////time/////////////
-let time_log = 120;
+////////////////// nav_tab /////////////////////
+nav_tab.addEventListener('click', function (e) {
+  const clicked = e.target.closest('.operations__tab');
+  if (!clicked) return;
+  operations__tab.forEach(function (el) {
+    el.classList.remove('operations__tab--active');
+  });
+  operations__content.forEach(function (el) {
+    el.classList.remove('operations__content--active');
+  });
+  if (clicked.classList.contains('operations__tab')) {
+    clicked.classList.add('operations__tab--active');
+    const x = document.querySelector(
+      `.operations__content--${clicked.dataset.tab}`,
+    );
+    x.classList.add('operations__content--active');
+  }
+});
+//////////////// hover-nav-header //////////////
+
+nav.addEventListener('mouseover', function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const sibil = link.closest('.nav').querySelectorAll('.nav__link');
+    sibil.forEach(element => {
+      element.style.opacity = 0.5;
+    });
+    e.target.style.opacity = 1;
+  }
+});
+///////////////
+nav.addEventListener('mouseout', function (e) {
+  nav_link.forEach(element => {
+    element.style.opacity = 1;
+  });
+});
+//////////////////fixed-nav///////////////////////
+const header = document.querySelector('.header');
+const navhight = nav.getBoundingClientRect().height;
+const sticky = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+const headeroberve = new IntersectionObserver(sticky, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navhight}px`,
+});
+headeroberve.observe(header);
+
+///////////////// effect-section ////////////////
+const sections = document.querySelectorAll('.section');
+const secop = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+const secobserve = new IntersectionObserver(secop, {
+  root: null,
+  threshold: 0.15,
+});
+sections.forEach(function (el) {
+  secobserve.observe(el);
+  ///el.classList.add('section--hidden');
+});
+//////////////// img-op //////////////////////
+const imgorg = document.querySelectorAll('.features img');
+const imgop = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('lazy-img');
+  const id = entry.target.dataset.src;
+  entry.target.setAttribute('src', id);
+  observer.unobserve(entry.target);
+};
+const imgobserve = new IntersectionObserver(imgop, {
+  root: null,
+  threshold: 0.15,
+});
+imgorg.forEach(function (el) {
+  imgobserve.observe(el);
+});
+/////////////////// slider //////////////////////
+const slides = document.querySelectorAll('.slide');
+const slider = document.querySelector('.slider');
+const btnleft = document.querySelector('.slider__btn--left');
+const btnright = document.querySelector('.slider__btn--right');
+const containerdots = document.querySelector('.dots');
+
+let currentslide = 0;
+const maxslide = slides.length;
+///////////
+const creatdot = function () {
+  slides.forEach(function (_, i) {
+    containerdots.insertAdjacentHTML(
+      'beforeend',
+      `<button class="dots__dot" data-slide="${i}"></button>`,
+    );
+  });
+};
+creatdot();
+containerdots.addEventListener('click', function (e) {
+  if (e.target.classList.contains('dots__dot')) {
+    currentslide = Number(e.target.dataset.slide);
+    slidecalc(currentslide);
+    activateDot(currentslide);
+  }
+});
+const activateDot = function (slide) {
+  document
+    .querySelectorAll('.dots__dot')
+    .forEach(dot => dot.classList.remove('dots__dot--active'));
+
+  document
+    .querySelector(`.dots__dot[data-slide="${slide}"]`)
+    .classList.add('dots__dot--active');
+};
+//////slide/////////
 let timer;
-const time = function (x) {
-  clearInterval(timer);
-  time_log = 120;
-  time_footer_log.textContent = `You will be logged out in 02:00`;
-  timer = setInterval(function () {
-    const min = String(Math.trunc(time_log / 60)).padStart(2, "0");
-    const sec = String(time_log % 60).padStart(2, "0");
-    time_footer_log.textContent = `You will be logged out in ${min}:${sec}`;
-    if (x) {
-      time_log--;
-    }
-
-    if (time_log < 0) {
-      clearInterval(time);
-      text_log.textContent = "Log in to get started";
-      container2.style.visibility = "hidden";
-      container3.style.visibility = "hidden";
-      container2.style.opacity = "0";
-      container3.style.opacity = "0";
-      input_close_user.value = "";
-      input_close_pin.value = "";
-      input_loan.value = "";
-      input_number_transfer.value = "";
-      input_user_transfer.value = "";
-      currentUser = null;
-    }
-  }, 1000);
+function shima() {
+  timer = setTimeout(function (e) {
+    slideright(currentslide);
+    shima();
+  }, 4000);
+}
+const slidecalc = function (params) {
+  slides.forEach(function (mov, i) {
+    mov.style.transform = `translateX(${100 * (i - params)}%)`;
+  });
+  activateDot(params);
 };
-//////////////date/////////////
-const option = {
-  hour: "numeric",
-  minute: "numeric",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-};
-const local = navigator.language;
-/////////////sort/////////////////
+shima();
+slidecalc(0);
 
-sort_footer.addEventListener("click", function () {
-  if (!currentUser) return;
-  if (currentUser && test) {
-    a.textContent = "";
-    sort(currentUser);
-    return (test = false);
+const slideright = function () {
+  if (currentslide === maxslide - 1) {
+    currentslide = 0;
+  } else {
+    currentslide++;
   }
-  if (currentUser && !test) {
-    Transaction(currentUser);
-    return (test = true);
+  slidecalc(currentslide);
+};
+const slideleft = function () {
+  if (currentslide === 0) {
+    currentslide = maxslide - 1;
+  } else {
+    currentslide--;
+  }
+  slidecalc(currentslide);
+};
+btnright.addEventListener('click', function () {
+  slideright();
+  clearTimeout(timer);
+  shima();
+});
+btnleft.addEventListener('click', function () {
+  slideleft()
+   clearTimeout(timer);
+  shima();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'ArrowRight') {
+    slideright();
+    clearTimeout(timer);
+    shima();
+  }
+  if (e.key === 'ArrowLeft') {
+    slideleft();
+    clearTimeout(timer);
+    shima();
   }
 });
-const sort = function (mov) {
-  let temp;
-
-  let op = [...Users[mov].money];
-  for (let i = 0; i < op.length; i++) {
-    for (let j = 0; j < op.length; j++) {
-      if (op[i] < op[j]) {
-        temp = op[i];
-        op[i] = op[j];
-        op[j] = temp;
-      }
-    }
-  }
-  for (const [i, item] of op.entries()) {
-    const div_item1 = document.querySelector(".item1");
-    const div_item12 = document.createElement("div.item12");
-    const div_item1_number = document.createElement("div.item1-number");
-    const div_item1_date = document.createElement("div.item1-date");
-    const div_item1_money = document.createElement("div.item1-money");
-    div_item12.classList.add("item12");
-    div_item1_number.classList.add("item1-number");
-    div_item1_date.classList.add("item1-date");
-    div_item1_money.classList.add("item1-money");
-    div_item12.appendChild(div_item1_number);
-    div_item12.appendChild(div_item1_date);
-    div_item12.appendChild(div_item1_money);
-    div_item1.prepend(div_item12);
-    if (item < 0) {
-      div_item1_number.textContent = `${Number(i) + 1} withdrawal`;
-      div_item1_date.textContent = "today";
-      div_item1_money.textContent = formatCurrency(item, Users[currentUser]);
-      div_item1_number.classList.remove("item1-number-positive");
-      div_item1_number.classList.add("item1-number-negative");
-    } else {
-      div_item1_number.textContent = `${Number(i) + 1} desposit`;
-      div_item1_date.textContent = "today";
-      div_item1_money.textContent = formatCurrency(item, Users[currentUser]);
-      div_item1_number.classList.add("item1-number-positive");
-      div_item1_number.classList.remove("item1-number-negative");
-    }
-  }
-  op = [];
-};
-/////////////////////////////////////////////
-const formatCurrency = function (value, user) {
-  return new Intl.NumberFormat(user.locale, {
-    style: "currency",
-    currency: user.currency,
-  }).format(value);
-};
-/////////////////////////////////
+////////////////

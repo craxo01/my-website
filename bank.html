@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="stylebank.css" />
+    <link rel="stylesheet" href="media.css">
+    <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+    <title>Bank</title>
+  </head>
+  <body>
+    <header class="container1 header-style">
+      <p>Log in to get started</p>
+      <img src="img/logo.png" alt="" />
+      <div>
+        <input class="input-header1" type="text" placeholder="user"  />
+        <input class="input-header2" type="text" placeholder="PIN" maxlength="4"/>
+        <button class="button-header">→</button>
+      </div>
+    </header>
+    <main class="container2">
+      <section class="header-main">
+        <div class="header-main-left">
+          <p class="header-main-text-left">Current balance</p>
+          <p class="header-main-text-left-2">As of 04/07/2026, 14:04</p>
+        </div>
+        <p class="header-main-text-right">25 952,59 €</p>
+      </section>
+      <section class="grid-section-2">
+        <div class="item1">
+          <div class="item12">
+            <div class="item1-number item1-number-positive">23 desposit</div>
+            <div class="item1-date">Today</div>
+            <div class="item1-money">50 000,00 €</div>
+          </div>
+        </div>
+        <div class="item2">
+          <div class="item21">
+            <p class="item2-text-header">Transfer money</p>
+            <div class="item2-div-input">
+              <input class="item2-input" type="text" />
+              <input class="item2-input" type="number" />
+              <button class="item2-button">→</button>
+            </div>
+            <div class="item2-text-down">
+              <p>Transfer to</p>
+              <p>Amount</p>
+            </div>
+          </div>
+        </div>
+        <div class="item3">
+          <div class="item21">
+            <p class="item2-text-header">Request loan</p>
+            <div class="item2-div-input">
+              <input class="item3-input" type="number" />
+              <button class="item3-button">→</button>
+            </div>
+            <div class="item3-text-down">
+              <p>Amount</p>
+            </div>
+          </div>
+        </div>
+        <div class="item4">
+          <div class="item21">
+            <p class="item2-text-header">Close account</p>
+            <div class="item2-div-input">
+              <input class="item4-input1" type="text" />
+              <input class="item4-input2" type="text" maxlength="4" />
+              <button class="item4-button">→</button>
+            </div>
+            <div class="item4-text-down">
+              <p>Confirm user</p>
+              <p>Confirm PIN</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="container3">
+      <div class="footer-div-item">
+        <p class="footer-text">IN</p>
+        <p class="footer-in-money">50 000,00 €</p>
+      </div>
+      <div class="footer-div-item">
+        <p class="footer-text">OUt</p>
+        <p class="footer-out-money" >50 000,00 €</p>
+      </div>
+      <div class="footer-div-item">
+        <p class="footer-text">INTEREST</p>
+        <p class="footer-interest-money">50 000,00 €</p>
+      </div>
+      <button class="footer-sort">
+        ↓ SORT
+      </button>
+      <div class="time"><p></p></div>
+    </footer>
+    <script src="scriptbank.js"></script>
+  </body>
+</html>
