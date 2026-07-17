@@ -127,7 +127,7 @@ const secobserve = new IntersectionObserver(secop, {
 });
 sections.forEach(function (el) {
   secobserve.observe(el);
-  ///el.classList.add('section--hidden');
+  el.classList.add('section--hidden');
 });
 //////////////// img-op //////////////////////
 const imgorg = document.querySelectorAll('.features img');
