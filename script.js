@@ -1,239 +1,317 @@
-'use strict';
+"use strict";
+const body = document.querySelector("body");
+const container = document.querySelector(".container");
+const level = document.querySelector(".level");
+const number = document.querySelector(".number");
+const header_text = document.querySelector("h1");
+const turn = document.querySelector(".turn");
+const game_container = document.querySelector(".game-container");
+const first_number = document.querySelector(".firstnumber");
+const second_number = document.querySelector(".secondnumber");
+const org_number = document.querySelector(".org-number");
+const bingo = document.querySelector(".bingo");
+const timer1 = document.querySelector(".timer1");
+const timer2 = document.querySelector(".timer2");
+const back1 = document.querySelector(".back1");
+const back2 = document.querySelector(".back2");
+const again = document.querySelector(".again");
+const nameplayer1 = document.querySelector(".name1");
+const nameplayer2 = document.querySelector(".name2");
+let levels;
+let numbers;
+let turns;
+let proe;
+let proo;
+let kar = true;
+let rak = true;
+let index = 0;
+let finish = 0;
+let w1;
+let w2;
+let leveltime = 0;
+////////////////////////////////////
 
-///////////////////////////////////////
-// Modal window
-
-const modal = document.querySelector('.modal');
-const overlay = document.querySelector('.overlay');
-const btnCloseModal = document.querySelector('.btn--close-modal');
-const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-const btnscrollto = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-const nav_link = document.querySelectorAll('.nav__link');
-const nav__links = document.querySelector('.nav__links');
-const nav_tab = document.querySelector('.operations');
-const nav = document.querySelector('.nav');
-const operations__tab = document.querySelectorAll('.operations__tab');
-const operations__content = document.querySelectorAll('.operations__content');
-const openModal = function () {
-  modal.classList.remove('hidden');
-  overlay.classList.remove('hidden');
-};
-const closeModal = function () {
-  modal.classList.add('hidden');
-  overlay.classList.add('hidden');
-};
-
-for (let i = 0; i < btnsOpenModal.length; i++)
-  btnsOpenModal[i].addEventListener('click', openModal);
-
-btnCloseModal.addEventListener('click', closeModal);
-overlay.addEventListener('click', closeModal);
-
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-    closeModal();
-  }
-});
-////////////////////////////////////////
-btnscrollto.addEventListener('click', function (e) {
-  section1.scrollIntoView({ behavior: 'smooth' });
-});
-
-//////////////////scroll-header-site-Method-1////////////////////
-/*nav_link.forEach(function(el){
-  el.addEventListener('click',function(e){
-    e.preventDefault();
-    const id=el.getAttribute('href');
-    document.querySelector(id).scrollIntoView({behavior : 'smooth'})
-  })
-})*/
-//////////////////scroll-header-site-Method-2////////////////////
-
-nav__links.addEventListener('click', function (e) {
-  if (!link.classList.contains('nav__link')) return;
-
-  const href = link.getAttribute('href');
-  if (href.startsWith('#')) {
-    const id = e.target.getAttribute('href');
-    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  }
-});
-////////////////// nav_tab /////////////////////
-nav_tab.addEventListener('click', function (e) {
-  const clicked = e.target.closest('.operations__tab');
-  if (!clicked) return;
-  operations__tab.forEach(function (el) {
-    el.classList.remove('operations__tab--active');
-  });
-  operations__content.forEach(function (el) {
-    el.classList.remove('operations__content--active');
-  });
-  if (clicked.classList.contains('operations__tab')) {
-    clicked.classList.add('operations__tab--active');
-    const x = document.querySelector(
-      `.operations__content--${clicked.dataset.tab}`,
-    );
-    x.classList.add('operations__content--active');
-  }
-});
-//////////////// hover-nav-header //////////////
-
-nav.addEventListener('mouseover', function (e) {
-  if (e.target.classList.contains('nav__link')) {
+container.addEventListener("mouseover", function (e) {
+  if (e.target.classList.contains("item")) {
     const link = e.target;
-    const sibil = link.closest('.nav').querySelectorAll('.nav__link');
-    sibil.forEach(element => {
+    const sibil = document.querySelectorAll(".item");
+    sibil.forEach((element) => {
       element.style.opacity = 0.5;
     });
     e.target.style.opacity = 1;
   }
 });
-///////////////
-nav.addEventListener('mouseout', function (e) {
-  nav_link.forEach(element => {
+container.addEventListener("mouseout", function (e) {
+  const sibil = document.querySelectorAll(".item");
+  sibil.forEach((element) => {
     element.style.opacity = 1;
   });
 });
-//////////////////fixed-nav///////////////////////
-const header = document.querySelector('.header');
-const navhight = nav.getBoundingClientRect().height;
-const sticky = function (entries) {
-  const [entry] = entries;
-  if (!entry.isIntersecting) {
-    nav.classList.add('sticky');
-  } else {
-    nav.classList.remove('sticky');
+level.addEventListener("click", function (e) {
+  if (e.target.classList.contains("item")) {
+    levels = e.target.textContent;
+    if (levels === "Easy") {
+      leveltime = 10;
+      timer1.textContent = `timer : ${leveltime}`;
+      timer2.textContent = `timer : ${leveltime}`;
+    }
+    if (levels === "Normal") {
+      leveltime = 7;
+      timer1.textContent = `timer : ${leveltime}`;
+      timer2.textContent = `timer : ${leveltime}`;
+    }
+    if (levels === "Hard") {
+      leveltime = 5;
+      timer1.textContent = `timer : ${leveltime}`;
+      timer2.textContent = `timer : ${leveltime}`;
+    }
+    console.log(levels);
+    header_text.textContent = "please chose your period of numbers";
+    level.style.opacity = "0";
+    level.style.visibility = "hidden";
+    number.style.visibility = "visible";
+    number.style.opacity = "100";
+  }
+});
+number.addEventListener("click", function (e) {
+  if (e.target.classList.contains("item")) {
+    numbers = Number(e.target.textContent);
+    console.log(typeof numbers);
+    header_text.textContent = "who should start ?";
+    number.style.visibility = "hidden";
+    number.style.opacity = "0";
+    turn.style.visibility = "visible";
+    turn.style.opacity = "100";
+  }
+});
+turn.addEventListener("click", function (e) {
+  if (e.target.classList.contains("item")) {
+    turns = e.target.textContent;
+    console.log(turns);
+    w1 = calceven(levels, numbers);
+    w2 = calcodd(levels, numbers);
+    shima();
+    header_text.textContent = "Play a Game";
+    turn.style.visibility = "hidden";
+    turn.style.opacity = "0";
+    game_container.style.visibility = "visible";
+    game_container.style.opacity = "100";
+  }
+});
+////////////////////////////////////////
+const even_wrong_numberA = function (params) {
+  let first = Math.floor(Math.random() * (params * 0.5)) + 1;
+  if (first % 2 !== 0) first++;
+  return first;
+};
+const even_wrong_numberB = function (params) {
+  let second =
+    Math.floor(Math.random() * (params * 0.3 + 1)) + Math.floor(params * 0.5);
+  if (second % 2 !== 0) second++;
+  return second;
+};
+const even_wrong_numberC = function (params) {
+  let third =
+    Math.floor(Math.random() * (params * 0.2 + 1)) + Math.floor(params * 0.8);
+  if (third % 2 !== 0) third--;
+  return third;
+};
+const odd_wrong_numberA = function (params) {
+  let first = Math.floor(Math.random() * (params * 0.5)) + 1;
+  if (first % 2 === 0) first++;
+  return first;
+};
+const odd_wrong_numberB = function (params) {
+  let second =
+    Math.floor(Math.random() * (params * 0.3 + 1)) + Math.floor(params * 0.5);
+  if (second % 2 === 0) second++;
+  return second;
+};
+const odd_wrong_numberC = function (params) {
+  let third =
+    Math.floor(Math.random() * (params * 0.2 + 1)) + Math.floor(params * 0.8);
+  if (third % 2 === 0) third--;
+  return third;
+};
+
+//////////////////////
+const calceven = function (e, p) {
+  if (e === "Easy") {
+    proe = even_wrong_numberA(p);
+    return proe;
+  }
+  if (e === "Normal") {
+    proe = even_wrong_numberB(p);
+    return proe;
+  }
+  if (e === "Hard") {
+    proe = even_wrong_numberC(p);
+    return proe;
   }
 };
-const headeroberve = new IntersectionObserver(sticky, {
-  root: null,
-  threshold: 0,
-  rootMargin: `-${navhight}px`,
-});
-headeroberve.observe(header);
-
-///////////////// effect-section ////////////////
-const sections = document.querySelectorAll('.section');
-const secop = function (entries, observer) {
-  const [entry] = entries;
-  if (!entry.isIntersecting) return;
-  entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.target);
+const calcodd = function (e, p) {
+  if (e === "Easy") {
+    proo = odd_wrong_numberA(p);
+    return proo;
+  }
+  if (e === "Normal") {
+    proo = odd_wrong_numberB(p);
+    return proo;
+  }
+  if (e === "Hard") {
+    proo = odd_wrong_numberC(p);
+    return proo;
+  }
 };
-const secobserve = new IntersectionObserver(secop, {
-  root: null,
-  threshold: 0.15,
-});
-sections.forEach(function (el) {
-  secobserve.observe(el);
-  el.classList.add('section--hidden');
-});
-//////////////// img-op //////////////////////
-const imgorg = document.querySelectorAll('.features img');
-const imgop = function (entries, observer) {
-  const [entry] = entries;
-  if (!entry.isIntersecting) return;
-  entry.target.classList.remove('lazy-img');
-  const id = entry.target.dataset.src;
-  entry.target.setAttribute('src', id);
-  observer.unobserve(entry.target);
-};
-const imgobserve = new IntersectionObserver(imgop, {
-  root: null,
-  threshold: 0.15,
-});
-imgorg.forEach(function (el) {
-  imgobserve.observe(el);
-});
-/////////////////// slider //////////////////////
-const slides = document.querySelectorAll('.slide');
-const slider = document.querySelector('.slider');
-const btnleft = document.querySelector('.slider__btn--left');
-const btnright = document.querySelector('.slider__btn--right');
-const containerdots = document.querySelector('.dots');
 
-let currentslide = 0;
-const maxslide = slides.length;
-///////////
-const creatdot = function () {
-  slides.forEach(function (_, i) {
-    containerdots.insertAdjacentHTML(
-      'beforeend',
-      `<button class="dots__dot" data-slide="${i}"></button>`,
+/////////////////////////////////
+let interavl;
+let time;
+const meraj = function (e) {
+  interavl = setInterval(function () {
+    e.textContent = `timer : ${time}`;
+    time--;
+    e.textContent = `timer : ${time}`;
+    if (time === 0) {
+      clearInterval(interavl);
+      header_text.textContent = "You lost";
+      body.style.backgroundImage =
+        "linear-gradient(to right, rgb(173, 0, 0), rgb(194, 7, 7))";
+      second_number.textContent = "you lost";
+      clearInterval(interavl);
+      return (finish = 1);
+    }
+  }, 1000);
+};
+////////////////////////////
+const random_time = function () {
+  return Math.trunc(Math.random() * 4) + 1;
+};
+const num = function () {
+  if (kar || (!rak && finish === 0)) {
+    time = leveltime;
+    meraj(timer1);
+    back1.classList.add("switch");
+    setTimeout(
+      function () {
+        index++;
+        if (index === w2 || index === w1) {
+          first_number.textContent = "Im lost";
+          header_text.textContent = "You win";
+          body.style.backgroundImage =
+            "linear-gradient(to right, rgb(0, 173, 29), rgb(7, 194, 38))";
+          clearInterval(interavl);
+          return (finish = 1);
+        }
+        if (index % 7 === 0 || index % 10 === 7) {
+          first_number.textContent = "bingo";
+        } else {
+          first_number.textContent = index;
+        }
+        kar = false;
+        rak = true;
+        org_number.textContent = index + 1;
+        clearInterval(interavl);
+        time = leveltime;
+        back1.classList.remove("switch");
+        back2.classList.add("switch");
+        meraj(timer2);
+        timer1.textContent = `timer : ${leveltime}`;
+      },
+      Number(`${random_time()}000`),
     );
+  }
+};
+//////////////////////////////////////////
+const calcgamenumber = function () {
+  index++;
+  second_number.textContent = org_number.textContent;
+  if (
+    (index % 7 === 0 || index % 10 === 7) &&
+    second_number.textContent !== "bingo"
+  ) {
+    second_number.textContent = "you lost";
+    header_text.textContent = "You lost";
+    body.style.backgroundImage =
+      "linear-gradient(to right, rgb(173, 0, 0), rgb(194, 7, 7))";
+    clearInterval(interavl);
+    return (finish = 1);
+  }
+  back2.classList.remove("switch");
+  clearInterval(interavl);
+  timer2.textContent = `timer : ${leveltime}`;
+  kar = true;
+  rak = false;
+  num();
+};
+const calcgamebingo = function () {
+  index++;
+  second_number.textContent = bingo.textContent;
+  if (
+    index % 7 !== 0 &&
+    index % 10 !== 7 &&
+    second_number.textContent === "bingo"
+  ) {
+    second_number.textContent = "you lost";
+    header_text.textContent = "You lost";
+    body.style.backgroundImage =
+      "linear-gradient(to right, rgb(173, 0, 0), rgb(194, 7, 7))";
+    clearInterval(interavl);
+
+    return (finish = 1);
+  }
+  back2.classList.remove("switch");
+  clearInterval(interavl);
+  timer2.textContent = `timer : ${leveltime}`;
+  kar = true;
+  rak = false;
+  num();
+};
+///////////////////////////////////////////////
+const shima = function () {
+  if (turns === "You") {
+    nameplayer1.textContent = "Player 1";
+    nameplayer2.textContent = "Player 2";
+    num();
+    org_number.addEventListener("click", function () {
+      if (index < numbers && finish === 0) {
+        if (!kar) {
+          calcgamenumber();
+        }
+      }
+    });
+    bingo.addEventListener("click", function () {
+      if (index < numbers && finish === 0) {
+        if (!kar) {
+          calcgamebingo();
+        }
+      }
+    });
+  }
+  if (turns === "Me") {
+    time = leveltime;
+    nameplayer1.textContent = "Player 2";
+    nameplayer2.textContent = "Player 1";
+    org_number.textContent = 1;
+    meraj(timer2);
+    back2.classList.add("switch");
+    org_number.addEventListener("click", function () {
+      if (index < numbers && finish === 0) {
+        if (rak) {
+          calcgamenumber();
+        }
+      }
+    });
+  }
+  bingo.addEventListener("click", function () {
+    if (index < numbers && finish === 0) {
+      if (rak) {
+        calcgamebingo();
+      }
+    }
   });
 };
-creatdot();
-containerdots.addEventListener('click', function (e) {
-  if (e.target.classList.contains('dots__dot')) {
-    currentslide = Number(e.target.dataset.slide);
-    slidecalc(currentslide);
-    activateDot(currentslide);
-  }
-});
-const activateDot = function (slide) {
-  document
-    .querySelectorAll('.dots__dot')
-    .forEach(dot => dot.classList.remove('dots__dot--active'));
 
-  document
-    .querySelector(`.dots__dot[data-slide="${slide}"]`)
-    .classList.add('dots__dot--active');
-};
-//////slide/////////
-let timer;
-function shima() {
-  timer = setTimeout(function (e) {
-    slideright(currentslide);
-    shima();
-  }, 4000);
-}
-const slidecalc = function (params) {
-  slides.forEach(function (mov, i) {
-    mov.style.transform = `translateX(${100 * (i - params)}%)`;
-  });
-  activateDot(params);
-};
-shima();
-slidecalc(0);
-
-const slideright = function () {
-  if (currentslide === maxslide - 1) {
-    currentslide = 0;
-  } else {
-    currentslide++;
-  }
-  slidecalc(currentslide);
-};
-const slideleft = function () {
-  if (currentslide === 0) {
-    currentslide = maxslide - 1;
-  } else {
-    currentslide--;
-  }
-  slidecalc(currentslide);
-};
-btnright.addEventListener('click', function () {
-  slideright();
-  clearTimeout(timer);
-  shima();
+again.addEventListener("click", function () {
+  location.reload();
 });
-btnleft.addEventListener('click', function () {
-  slideleft()
-   clearTimeout(timer);
-  shima();
-});
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'ArrowRight') {
-    slideright();
-    clearTimeout(timer);
-    shima();
-  }
-  if (e.key === 'ArrowLeft') {
-    slideleft();
-    clearTimeout(timer);
-    shima();
-  }
-});
-////////////////
